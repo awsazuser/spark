@@ -10,12 +10,6 @@ RUN yum clean all; \
 # update libselinux. see https://github.com/sequenceiq/hadoop-docker/issues/14
 RUN yum update -y libselinux
 
-# passwordless ssh
-RUN ssh-keygen -q -N "" -t dsa -f /etc/ssh/ssh_host_dsa_key
-RUN ssh-keygen -q -N "" -t rsa -f /etc/ssh/ssh_host_rsa_key
-RUN ssh-keygen -q -N "" -t rsa -f /root/.ssh/id_rsa
-RUN cp /root/.ssh/id_rsa.pub /root/.ssh/authorized_keys
-
 # java
 RUN curl -LO 'http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jdk-8u131-linux-x64.rpm' -H 'Cookie: oraclelicense=accept-securebackup-cookie'
 RUN rpm -i jdk-8u131-linux-x64.rpm
@@ -40,10 +34,6 @@ RUN rm /usr/bin/java && ln -s $JAVA_HOME/bin/java /usr/bin/java
 # pseudo distributed
 ADD slaves $SPARK_HOME/conf/slaves
 
-ADD ssh_config /root/.ssh/config
-RUN chmod 600 /root/.ssh/config
-RUN chown root:root /root/.ssh/config
-
 ADD bootstrap_master.sh /usr/local/bootstrap_master.sh
 ADD bootstrap_slave.sh /usr/local/bootstrap_slave.sh
 RUN chmod 700 /usr/local/bootstrap_master.sh
@@ -54,14 +44,6 @@ ADD sqljdbc4.jar /usr/local/spark/sqljdbc4.jar
 
 ADD core-site.xml /usr/local/spark/conf/core-site.xml
 ADD spark-defaults.conf /usr/local/spark/conf/spark-defaults.conf
-
-# fix the 254 error code
-RUN sed  -i "/^[^#]*UsePAM/ s/.*/#&/"  /etc/ssh/sshd_config
-RUN echo "UsePAM no" >> /etc/ssh/sshd_config
-RUN echo "Port 2122" >> /etc/ssh/sshd_config
-
-RUN echo "iopjkl55\niopjkl55" | passwd --stdin root
-
 
 # spark ports
 EXPOSE 7077 8080 6066
