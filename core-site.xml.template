@@ -1,0 +1,11 @@
+  <configuration>
+      <property>
+          <name>fs.defaultFS</name>
+          <value>hdfs://HOSTNAME:9000</value>
+      </property>
+       <configuration>
+      <property>
+          <name>fs.azure.account.key.dockerstore01.blob.core.windows.net</name>
+          <value>=======Accesskey===========</value>
+      </property>
+  </configuration>
