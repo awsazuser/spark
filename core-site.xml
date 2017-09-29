@@ -1,0 +1,6 @@
+ <configuration>
+      <property>
+          <name>fs.azure.account.key.sparkstorage04182017.blob.core.windows.net</name>
+          <value>#################################################################################</value>
+      </property>
+  </configuration>
