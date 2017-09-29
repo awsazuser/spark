@@ -1,5 +1,5 @@
 FROM centos:latest
-MAINTAINER testing
+MAINTAINER awsazuser@gmail.com
 
 USER root
 
